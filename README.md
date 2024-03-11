@@ -46,3 +46,9 @@ This app uses:
 ## Extra info
 
 - I've opted to ignore most of the return values from the api (like links to docs or terms of use, and additional metadata), they could however be added to the result structs.
+
+## TODO
+
+- Add tests
+- Add better error handling
+- Add interactive mode
