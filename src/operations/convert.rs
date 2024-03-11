@@ -10,12 +10,5 @@ pub async fn convert(
     amount: f32,
 ) -> Result<String, ApiError> {
     let res: CurrencyPair = client.get(&format!("pair/{}/{}", from, to)).await?;
-    Ok(format!(
-        "{:.4} {} is {:.4} {}\nLast Updated: {} UTC",
-        amount,
-        from,
-        res.conversion_rate * amount,
-        to,
-        res.time_last_update_unix.format("%Y-%m-%d %H:%M:%S")
-    ))
+    Ok(res.get_display_amount(from, to, amount))
 }

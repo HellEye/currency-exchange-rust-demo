@@ -1,12 +1,14 @@
 extern crate dotenv_codegen;
-use crate::operations::{check, convert, list, quota};
-use clap::Parser;
-use command::{Action, Args};
-use util::{client::CacheClient, error::ApiError};
+
 mod command;
 mod operations;
 mod response;
 mod util;
+
+use crate::operations::{check, convert, list, quota};
+use clap::Parser;
+use command::{Action, Args};
+use util::{client::CacheClient, error::ApiError};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {

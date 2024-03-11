@@ -28,7 +28,7 @@ Uses [ExchangeRate](https://exchangerate-api.com)
 
 `exchange quota` - check remaining avaliable api calls (This request is always uncached)
 
-## Details
+## Dependencies
 
 This app uses:
 
@@ -42,3 +42,7 @@ This app uses:
 - `tokio` for async runtime
 - `reqwest-middleware` and `http-cache-reqwest` for caching
 - `serde` and `serde-json` for JSON deserialization
+
+## Extra info
+
+- I've opted to ignore most of the return values from the api (like links to docs or terms of use, and additional metadata), they could however be added to the result structs.
