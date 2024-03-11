@@ -9,14 +9,12 @@ pub async fn convert(
     to: String,
     amount: f32,
 ) -> Result<String, ApiError> {
-    let res: CurrencyPair = client
-        .get(&format!("pair/{}/{}/{}", from, to, amount))
-        .await?;
+    let res: CurrencyPair = client.get(&format!("pair/{}/{}", from, to)).await?;
     Ok(format!(
         "{:.4} {} is {:.4} {}\nLast Updated: {} UTC",
         amount,
         from,
-        res.conversion_result.unwrap_or(0.0),
+        res.conversion_rate * amount,
         to,
         res.time_last_update_unix.format("%Y-%m-%d %H:%M:%S")
     ))
