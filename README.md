@@ -18,6 +18,8 @@ Uses [ExchangeRate](https://exchangerate-api.com)
 
 ### Commands
 
+`exchange interactive` - Run interactive mode
+
 `exchange convert <from> <to> <amount>` - Convert amount from one currency to another
 
 `exchange list` - List all supported currencies
@@ -42,6 +44,7 @@ This app uses:
 - `tokio` for async runtime
 - `reqwest-middleware` and `http-cache-reqwest` for caching
 - `serde` and `serde-json` for JSON deserialization
+- `dialoguer` for interactive mode
 
 ## Extra info
 
@@ -50,6 +53,4 @@ This app uses:
 
 ## TODO
 
-- Add tests
-- Add better error handling
-- Add interactive mode
+- Add more tests
