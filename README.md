@@ -46,6 +46,7 @@ This app uses:
 ## Extra info
 
 - I've opted to ignore most of the return values from the api (like links to docs or terms of use, and additional metadata), they could however be added to the result structs.
+- Pretty error handling isn't great because the exchange api doesn't give back any information besides a simple error code. Due to this, more context than just the response is necessary.
 
 ## TODO
 

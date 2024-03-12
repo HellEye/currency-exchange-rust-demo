@@ -1,6 +1,9 @@
 use crate::{
     response::{CurrencyDetails, ListResponse},
-    util::{client::CacheClient, error::ApiError},
+    util::{
+        client::CacheClient,
+        error::{map_response_error, ApiError},
+    },
 };
 
 pub async fn list(client: &CacheClient, base: Option<String>) -> Result<String, ApiError> {
@@ -12,7 +15,13 @@ pub async fn list(client: &CacheClient, base: Option<String>) -> Result<String, 
         }
         // Provide the list and every conversion avaliable for given currency
         Some(base) => {
-            let res: CurrencyDetails = client.get(format!("latest/{}", base).as_str()).await?;
+            let res: CurrencyDetails = client
+                .get(format!("latest/{}", base).as_str())
+                .await
+                .map_err(map_response_error(format_args!(
+                    "{} is not a valid currency code",
+                    base
+                )))?;
             Ok(res.get_display(base))
         }
     }

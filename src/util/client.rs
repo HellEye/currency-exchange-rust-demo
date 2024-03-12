@@ -7,7 +7,7 @@ use http_cache_reqwest::{
 use reqwest::Client;
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
 
-use super::error::ApiError;
+use super::error::{response_into_error, ApiError};
 /// Wrapper for reqwest::Client with built in caching
 pub struct CacheClient {
     pub client: ClientWithMiddleware,
@@ -45,14 +45,14 @@ impl CacheClient {
     pub async fn get<T: for<'de> serde::Deserialize<'de>>(&self, url: &str) -> Result<T, ApiError> {
         // Make request
         let res = self.client.get(self.exchange_url(url)).send().await?;
+        let result = res.error_for_status_ref();
+        if result.is_err() {
+            let parsed = response_into_error(res).await;
+            return Err(parsed);
+        }
 
         // Parse response into desired result
-        let data = serde_json::from_str(
-            res.text()
-                .await
-                .expect("Something went wrong when reading response")
-                .as_str(),
-        )?;
+        let data = serde_json::from_str(res.text().await?.as_str())?;
         Ok(data)
     }
     pub async fn get_no_cache<T: for<'de> serde::Deserialize<'de>>(

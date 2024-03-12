@@ -25,6 +25,8 @@ pub enum Action {
     },
     /// Check api quota
     Quota,
+    /// Run in interactive mode
+    Interactive,
 }
 #[derive(Parser, Debug)]
 /// Convert currencies and check exchange rates
