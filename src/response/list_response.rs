@@ -1,4 +1,4 @@
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, serde::Serialize)]
 pub struct ListResponse {
     pub result: String,
     pub documentation: String,

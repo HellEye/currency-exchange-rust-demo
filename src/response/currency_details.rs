@@ -2,7 +2,7 @@ use crate::util::time::LastUpdateTime;
 use chrono::{DateTime, Utc};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, serde::Serialize)]
 pub struct CurrencyDetails {
     pub base_code: String,
     #[serde(with = "chrono::serde::ts_seconds")]
@@ -18,12 +18,15 @@ impl LastUpdateTime for CurrencyDetails {
 
 impl CurrencyDetails {
     pub fn get_display(&self, base: String) -> String {
-        let data = self
+        let mut data = self
             .conversion_rates
             .iter()
             .map(|(symbol, rate)| format!("{} - {:>10.4}", symbol, rate))
-            .collect::<Vec<String>>()
-            .join("\n");
+            .collect::<Vec<String>>();
+        data.sort();
+
+        let data = data.join("\n");
+
         format!(
             "Currency conversion for {base}:\nLast update at {time}\n{data}",
             base = base,

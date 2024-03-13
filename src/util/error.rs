@@ -1,10 +1,16 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Serialize)]
 pub struct ApiResponseError {
     pub result: String,
     #[serde(rename(deserialize = "error-type"))]
     pub error_type: String,
+}
+
+impl PartialEq for ApiResponseError {
+    fn eq(&self, other: &Self) -> bool {
+        self.error_type == other.error_type && self.result == other.result
+    }
 }
 
 // Couldn't implement this with from/into because response.text returns a future
@@ -20,6 +26,7 @@ pub async fn response_into_error(res: reqwest::Response) -> ApiError {
     ApiError::ResponseError(err)
 }
 
+#[derive(Debug)]
 pub enum ApiError {
     RequestError(reqwest_middleware::Error),
     ResponseError(ApiResponseError),
@@ -60,7 +67,7 @@ impl ApiError {
         }
     }
 }
-
+#[derive(Clone, Debug)]
 pub enum ErrorCode {
     InvalidKey,
     InactiveAccount,
@@ -68,6 +75,22 @@ pub enum ErrorCode {
     UnsupportedCode,
     MalformedRequest,
     UnknownError(String),
+}
+
+impl Serialize for ErrorCode {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(match self {
+            ErrorCode::InvalidKey => "invalid-key",
+            ErrorCode::InactiveAccount => "inactive-account",
+            ErrorCode::QuotaReached => "quota-reached",
+            ErrorCode::UnsupportedCode => "unsupported-code",
+            ErrorCode::MalformedRequest => "malformed-request",
+            ErrorCode::UnknownError(e) => e.as_str(),
+        })
+    }
 }
 
 impl From<String> for ErrorCode {
