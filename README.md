@@ -50,6 +50,7 @@ This app uses:
 
 - I've opted to ignore most of the return values from the api (like links to docs or terms of use, and additional metadata), they could however be added to the result structs.
 - Pretty error handling isn't great because the exchange api doesn't give back any information besides a simple error code. Due to this, more context than just the response is necessary.
+- I'm not sure if tests are done correctly. I've never worked with reqwest, and there isn't any crate for mocking responses (that I could find), so I made a simple middleware. Something doesn't feel right, but it works for the use-case of this project.
 
 ## TODO
 
