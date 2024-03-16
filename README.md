@@ -1,5 +1,7 @@
 # Currency Converter
 
+[![Rust](https://github.com/HellEye/currency-exchange-rust-demo/actions/workflows/rust.yml/badge.svg)](https://github.com/HellEye/currency-exchange-rust-demo/actions/workflows/rust.yml)
+
 Sample project to convert currencies using [Rust](https://www.rust-lang.org).
 
 Uses [ExchangeRate](https://exchangerate-api.com)
